@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio‑Aholics‑Anonymous</title>
+  <meta name="description" content="A friendly guide to responsible audio gear buying—with an addiction questionnaire, practical advice, and resources." />
+  <style>
+    :root{
+      --bg: #0f1220;          /* deep midnight */
+      --card: #171A2B;        /* slightly lighter */
+      --ink: #E7EAF7;         /* near-white text */
+      --muted: #A8B0D3;
+      --accent: #7C9DFF;      /* periwinkle */
+      --accent-2: #41E2BA;    /* aqua-mint */
+      --warn: #FF8A65;
+      --danger: #FF5C8A;
+      --good: #64D17A;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink); background: radial-gradient(1200px 800px at 70% -10%, #1a1f3e, var(--bg));
+      line-height:1.45;
+    }
+    a{ color: var(--accent); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+    header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(15,18,32,.8), rgba(15,18,32,.35));
+      border-bottom: 1px solid rgba(124,157,255,.15);
+    }
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 18px 20px; }
+    .nav{ display:flex; align-items:center; gap:16px; flex-wrap: wrap; }
+    .brand{ font-weight: 800; letter-spacing:.3px; display:flex; gap:10px; align-items:center; }
+    .brand .logo{
+      width: 34px; height: 34px; border-radius: 10px;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent-2));
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.15), var(--shadow);
+    }
+    .nav a{ padding: 8px 12px; border-radius: 999px; border:1px solid transparent; }
+    .nav a:hover{ background:#151936; border-color: rgba(124,157,255,.25); text-decoration:none; }
+    .nav .cta{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0a0e20; font-weight:700; }
+
+    main{ padding: 30px 20px 100px; }
+    section{ display:none; }
+    section.active{ display:block; }
+
+    .hero{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center;
+    }
+    .card{ background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.08); padding: 22px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .card hr{ border:0; border-top:1px solid rgba(255,255,255,.08); margin: 18px 0; }
+
+    h1{ font-size: clamp(28px, 3vw, 44px); margin: 0 0 8px; }
+    h2{ font-size: clamp(22px, 2.5vw, 32px); margin: 0 0 8px; }
+    h3{ font-size: 18px; margin: 0 0 8px; color: var(--muted); font-weight:600; }
+    p.lead{ color: var(--muted); font-size: clamp(16px, 1.7vw, 19px); }
+
+    .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+    .pill{ display:inline-flex; align-items:center; gap:8px; padding: 8px 12px; background:#151936; border:1px solid rgba(255,255,255,.08); border-radius: 999px; color: var(--muted); font-size: 13px; }
+
+    .question{ margin: 10px 0 22px; }
+    .question legend{ font-weight: 700; margin-bottom: 8px; }
+    .scale{ display:flex; gap:10px; flex-wrap: wrap; }
+    .scale label{ background:#151936; border:1px solid rgba(255,255,255,.10); padding: 10px 12px; border-radius: 12px; cursor:pointer; user-select:none; }
+    .scale input{ display:none; }
+    .scale input:checked + span{ outline: 2px solid var(--accent); background: #101536; }
+
+    .actions{ display:flex; gap:12px; flex-wrap: wrap; }
+    button{ border:0; cursor:pointer; background:#182146; color:var(--ink); padding: 12px 16px; border-radius: 12px; font-weight:700; box-shadow: var(--shadow); }
+    button.primary{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#0a0e20; }
+
+    .progress{ height: 12px; background:#14162a; border:1px solid rgba(255,255,255,.1); border-radius:999px; overflow:hidden; }
+    .bar{ height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .45s ease; }
+
+    .badge{ font-weight:800; letter-spacing:.4px; padding: 6px 10px; border-radius: 10px; display:inline-block; }
+    .lvl1{ background: rgba(100,209,122,.15); color: var(--good); border: 1px solid rgba(100,209,122,.35); }
+    .lvl2{ background: rgba(255,138,101,.15); color: var(--warn); border: 1px solid rgba(255,138,101,.35); }
+    .lvl3{ background: rgba(255,92,138,.12); color: var(--danger); border: 1px solid rgba(255,92,138,.35); }
+
+    .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+
+    footer{ color: var(--muted); border-top:1px solid rgba(255,255,255,.08); background: #0e1120; }
+    .foot{ display:flex; gap:16px; justify-content: space-between; align-items:center; flex-wrap:wrap; }
+    .tiny{ font-size: 12px; color: var(--muted); }
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr; }
+      .two-col{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <div class="brand"><div class="logo" aria-hidden="true"></div> Audio‑Aholics‑Anonymous</div>
+    <nav style="margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;">
+      <a href="#home">Home</a>
+      <a href="#quiz">Questionnaire</a>
+      <a href="#advice">Responsible Buying</a>
+      <a class="cta" href="#quiz">Take the Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="hero">
+      <div class="card">
+        <h1>Welcome, fellow listener 👋</h1>
+        <p class="lead">This is a judgement‑free zone for people who can’t stop thinking about speakers, amps, DACs, tubes, and cables. Take our friendly questionnaire to see where you are on the <em>Audio Addiction Spectrum</em>, then get practical, evidence‑minded tips for buying gear responsibly.</p>
+        <div style="display:flex; gap:8px; margin:16px 0 6px; flex-wrap:wrap;">
+          <span class="pill">🔊 Speakers</span>
+          <span class="pill">🎚️ Amps</span>
+          <span class="pill">🧪 Blind Tests</span>
+          <span class="pill">🎵 Music > Gear</span>
+          <span class="pill">📐 Room First</span>
+        </div>
+        <div class="actions" style="margin-top:10px;">
+          <a href="#quiz"><button class="primary">Start the Questionnaire</button></a>
+          <a href="#advice"><button>Read Responsible Buying Tips</button></a>
+        </div>
+      </div>
+      <div class="card" aria-label="Feature highlights">
+        <h2>What you’ll find here</h2>
+        <div class="grid" style="margin-top:10px;">
+          <div class="card" style="padding:14px;">
+            <h3>Self‑assessment</h3>
+            <p>10 quick questions to estimate your level—from <em>Casual Enthusiast</em> to <em>Full‑Blown Audioholic</em>.</p>
+          </div>
+          <div class="card" style="padding:14px;">
+            <h3>Evidence‑minded tips</h3>
+            <p>Practical advice on room treatment, blind A/B testing, budgeting, and upgrade cadence.</p>
+          </div>
+          <div class="card" style="padding:14px;">
+            <h3>Action plan</h3>
+            <p>Personalized suggestions based on your score, plus a printable pledge to keep your wallet happy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="two-col">
+      <div class="card">
+        <h2>Audio Addiction Questionnaire</h2>
+        <p class="lead">Rate how often each statement describes you.</p>
+        <div class="progress" aria-label="Quiz progress"><div class="bar" id="progressBar"></div></div>
+        <form id="quizForm">
+          <!-- Questions -->
+        </form>
+        <div class="actions" style="margin-top:8px;">
+          <button class="primary" id="submitQuiz" type="button">See My Results</button>
+          <button type="button" id="resetQuiz">Reset</button>
+        </div>
+        <p class="tiny">Your score is stored locally in your browser only.</p>
+      </div>
+      <div class="card" id="resultsCard" aria-live="polite">
+        <h2>Your Results</h2>
+        <p id="scoreLine" style="font-size:20px; font-weight:800; margin: 10px 0 2px;">No score yet.</p>
+        <div id="levelBadge" class="badge" style="display:none; margin-bottom:8px;"></div>
+        <div id="insights"></div>
+        <hr/>
+        <p class="tiny">Tip: Compare speakers with level‑matched blind A/B tests. If you can’t reliably tell them apart at the same SPL, consider saving the cash for room treatment or music.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVICE -->
+  <section id="advice">
+    <div class="card">
+      <h2>Responsible Audio Purchasing</h2>
+      <p class="lead">Hear more. Spend wiser. Enjoy the music, not just the gear.</p>
+      <div class="two-col">
+        <div class="card" style="padding:14px;">
+          <h3>Before You Buy</h3>
+          <ul>
+            <li><strong>Room first:</strong> Room acoustics often beat pricier speakers. Try basic treatment and placement.</li>
+            <li><strong>Blind A/B at matched levels:</strong> Sighted listening is biased. Match SPL within ±0.5 dB.</li>
+            <li><strong>30‑day rule:</strong> Add to a wishlist; if you still want it in 30 days, reassess.</li>
+            <li><strong>Define the problem:</strong> What specific shortcoming are you solving (e.g., bass evenness, imaging)?</li>
+            <li><strong>Set an upgrade cadence:</strong> e.g., at most one upgrade per 6–12 months.</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px;">
+          <h3>Smart Money</h3>
+          <ul>
+            <li><strong>Budget buckets:</strong> 60% speakers/room, 25% source/amp, 10% cables/stands, 5% fun.</li>
+            <li><strong>Cap the hobby share:</strong> Keep audio ≤ a fixed % of discretionary income.</li>
+            <li><strong>Buy used, sell smart:</strong> Favor gear with stable resale value; keep boxes & receipts.</li>
+            <li><strong>Warranty & return policies:</strong> Prefer no‑quibble returns and transferrable warranties.</li>
+            <li><strong>Spend on music & shows:</strong> Allocate a slice to recordings and live concerts.</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px;">
+          <h3>Healthy Habits</h3>
+          <ul>
+            <li><strong>Demo with your playlist:</strong> Use tracks you know well across genres and volumes.</li>
+            <li><strong>Limit forum doom‑scrolling:</strong> Schedule specific research windows.</li>
+            <li><strong>Accountability buddy:</strong> Share your plan with a friend who will sanity‑check buys.</li>
+            <li><strong>One‑in, one‑out:</strong> Don’t hoard; pass great gear to the next listener.</li>
+            <li><strong>Protect your hearing:</strong> Long sessions ≤ 80–85 dB; use a meter app.</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px;">
+          <h3>Printable Pledge</h3>
+          <p>I pledge to prioritize room acoustics, blind tests, and a clear budget. I will upgrade on a schedule, not on impulse. I’ll listen more than I shop.</p>
+          <button id="printPledge">Print this section</button>
+        </div>
+      </div>
+      <hr/>
+      <details>
+        <summary><strong>Privacy</strong></summary>
+        <p class="tiny">We don’t collect data. Quiz results are stored only in your browser via localStorage and can be cleared with the Reset button.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="tiny">© <span id="year"></span> Audio‑Aholics‑Anonymous — Built with ❤️ for music lovers.</div>
+    <div class="tiny">Not medical/financial advice. Please seek professional help if compulsive buying harms your wellbeing.</div>
+  </div>
+</footer>
+
+<script>
+  // --- Simple hash router ---
+  const sections = Array.from(document.querySelectorAll('main section'));
+  function show(hash){
+    const id = (hash || location.hash || '#home').replace('#','');
+    sections.forEach(s => s.classList.toggle('active', s.id === id));
+  }
+  addEventListener('hashchange', () => show(location.hash));
+  show(location.hash);
+
+  // --- Year ---
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // --- Quiz Questions ---
+  const QUESTIONS = [
+    "I research speakers/amps online for more than 5 hours a week.",
+    "I’ve bought audio gear I didn’t strictly need.",
+    "I hide or downplay purchases from family/roommates.",
+    "I chase tiny improvements I probably couldn’t identify blind.",
+    "I’ve returned or resold gear within 30 days due to impulse buys.",
+    "I neglect room treatment even though I upgrade gear often.",
+    "I exceed my planned audio budget.",
+    "I read forums/reviews even when I’m not buying soon.",
+    "I test at loud volumes for long sessions without measuring SPL.",
+    "Friends comment on how often my system changes."
+  ];
+
+  const SCALE = [
+    { label: 'Never', val: 0 },
+    { label: 'Rarely', val: 1 },
+    { label: 'Sometimes', val: 2 },
+    { label: 'Often', val: 3 },
+    { label: 'Always', val: 4 },
+  ];
+
+  const form = document.getElementById('quizForm');
+  const progressBar = document.getElementById('progressBar');
+  const resultsCard = document.getElementById('resultsCard');
+  const scoreLine = document.getElementById('scoreLine');
+  const levelBadge = document.getElementById('levelBadge');
+  const insights = document.getElementById('insights');
+
+  function renderQuiz(){
+    form.innerHTML = '';
+    QUESTIONS.forEach((q, i) => {
+      const field = document.createElement('fieldset');
+      field.className = 'question';
+      field.innerHTML = `<legend>Q${i+1}. ${q}</legend>`;
+      const row = document.createElement('div');
+      row.className = 'scale';
+      SCALE.forEach(s => {
+        const id = `q${i}_${s.val}`;
+        const label = document.createElement('label');
+        label.setAttribute('for', id);
+        label.innerHTML = `<input type="radio" name="q${i}" id="${id}" value="${s.val}"><span>${s.label}</span>`;
+        row.appendChild(label);
+      });
+      field.appendChild(row);
+      form.appendChild(field);
+    });
+  }
+  renderQuiz();
+
+  function getAnswered(){ return Array.from(form.querySelectorAll('input[type=radio]:checked')); }
+  function updateProgress(){
+    const answered = new Set(getAnswered().map(i => i.name)).size;
+    progressBar.style.width = `${(answered / QUESTIONS.length) * 100}%`;
+  }
+  form.addEventListener('change', updateProgress);
+
+  function interpret(score){
+    // Max 40
+    let level, desc, cls;
+    if(score <= 10){
+      level = 'Casual Enthusiast';
+      desc = 'You love music and dabble in gear. Keep enjoying—consider small room tweaks before big buys.';
+      cls = 'lvl1';
+    } else if(score <= 20){
+      level = 'Growing Gearhead';
+      desc = 'You’re getting serious. Set a budget, try blind A/B, and create an upgrade calendar.';
+      cls = 'lvl2';
+    } else if(score <= 30){
+      level = 'Compulsive Upgrader';
+      desc = 'Beware of impulse cycles. Enforce the 30‑day rule, sell unused gear, and prioritize room treatment.';
+      cls = 'lvl2';
+    } else {
+      level = 'Full‑Blown Audioholic';
+      desc = 'Time to reset habits. Freeze upgrades for 90 days, focus on music, and ask a buddy to hold you accountable.';
+      cls = 'lvl3';
+    }
+    return { level, desc, cls };
+  }
+
+  function showResults(score){
+    const { level, desc, cls } = interpret(score);
+    scoreLine.textContent = `Score: ${score} / 40`;
+    levelBadge.textContent = level;
+    levelBadge.className = `badge ${cls}`;
+    levelBadge.style.display = 'inline-block';
+    insights.innerHTML = `<p>${desc}</p>`;
+    localStorage.setItem('aaa_score', String(score));
+  }
+
+  document.getElementById('submitQuiz').addEventListener('click', () => {
+    const chosen = getAnswered();
+    if(chosen.length < QUESTIONS.length){
+      alert('Please answer all questions to get your score.');
+      return;
+    }
+    const score = chosen.reduce((sum, i) => sum + Number(i.value), 0);
+    showResults(score);
+    location.hash = '#quiz';
+  });
+
+  document.getElementById('resetQuiz').addEventListener('click', () => {
+    localStorage.removeItem('aaa_score');
+    renderQuiz();
+    updateProgress();
+    scoreLine.textContent = 'No score yet.';
+    levelBadge.style.display = 'none';
+    insights.innerHTML = '';
+  });
+
+  // Restore score if available
+  const saved = Number(localStorage.getItem('aaa_score')); 
+  if(!Number.isNaN(saved) && saved > 0){ showResults(saved); }
+
+  // Print pledge
+  document.getElementById('printPledge').addEventListener('click', () => {
+    const w = window.open('', 'pledge');
+    w.document.write(`<!doctype html><title>Audio‑Aholics‑Anonymous Pledge</title><style>body{font-family:system-ui; padding:30px;} h1{font-size:22px;} p{font-size:16px;}</style><h1>Audio‑Aholics‑Anonymous Pledge</h1><p>I pledge to prioritize room acoustics, blind tests, and a clear budget. I will upgrade on a schedule, not on impulse. I’ll listen more than I shop.</p><p>Date: _________ &nbsp; Signature: ____________________________</p>`);
+    w.document.close(); w.focus(); w.print(); w.close();
+  });
+</script>
+</body>
+</html>
